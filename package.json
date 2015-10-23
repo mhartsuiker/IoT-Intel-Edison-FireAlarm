@@ -1,0 +1,12 @@
+{
+  "name": "FireAlarm",
+  "description": "FireAlarm is an IoT solution for fire detection and warning",
+  "version": "0.0.1",
+  "main": "main.js",
+  "engines": {
+    "node": ">=0.10.0"
+  },
+  "dependencies": {
+    "socket.io":"latest"
+  }
+}

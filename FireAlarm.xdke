@@ -1,0 +1,60 @@
+{
+  "project": {
+    "projectSettingsVersion": "2.0.0",
+    "initialAutoPluginCount": 0,
+    "currentBuildConfiguration": "Android",
+    "projectFiles": {},
+    "projectDirectories": {}
+  },
+  "iot-tab": {
+    "fileStatus": {
+      "FireAlarm.xdk": {
+        "previousModTime": 1445109313201,
+        "modified": 1445109313201,
+        "seen": true,
+        "name": "FireAlarm.xdk"
+      },
+      "FireAlarm.xdke": {
+        "previousModTime": 1445601222128,
+        "modified": 1445601222128,
+        "seen": true,
+        "name": "FireAlarm.xdke"
+      },
+      "icon.png": {
+        "previousModTime": 1445109312960,
+        "modified": 1445109312960,
+        "seen": true,
+        "name": "icon.png"
+      },
+      "main.js": {
+        "previousModTime": 1445601242687,
+        "modified": 1445601242687,
+        "seen": true,
+        "name": "main.js"
+      },
+      "package.json": {
+        "previousModTime": 1445109416465,
+        "modified": 1445109416465,
+        "seen": true,
+        "name": "package.json"
+      },
+      "README.md": {
+        "previousModTime": 1445109312961,
+        "modified": 1445109312961,
+        "seen": true,
+        "name": "README.md"
+      },
+      "xdk/project-info.json": {
+        "previousModTime": 1445109313180,
+        "modified": 1445109313180,
+        "seen": true,
+        "name": "xdk/project-info.json"
+      }
+    },
+    "boardFileStatus": {
+      "main.js": {
+        "previousModTime": 1445601245291
+      }
+    }
+  }
+}
