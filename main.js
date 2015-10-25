@@ -69,7 +69,8 @@ function readTemperature() {
     if (buttonState == 1) {
         buzzer.stopSound();
         clearInterval(interval);
-        log(constants.LOGLEVELS.INFO, constants.MESSAGES.Shutdown);        
+        log(constants.LOGLEVELS.INFO, constants.MESSAGES.Shutdown);
+        client.end();
     } else {
         var temperature = readSensorData();
         
