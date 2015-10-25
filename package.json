@@ -7,6 +7,6 @@
     "node": ">=0.10.0"
   },
   "dependencies": {
-    "socket.io":"latest"
+    "mqtt": ">=1.3.3"
   }
 }
