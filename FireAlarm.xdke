@@ -15,8 +15,8 @@
         "name": "FireAlarm.xdk"
       },
       "FireAlarm.xdke": {
-        "previousModTime": 1445601222128,
-        "modified": 1445601222128,
+        "previousModTime": 1445799093797,
+        "modified": 1445799093797,
         "seen": true,
         "name": "FireAlarm.xdke"
       },
@@ -27,20 +27,20 @@
         "name": "icon.png"
       },
       "main.js": {
-        "previousModTime": 1445601242687,
-        "modified": 1445601242687,
+        "previousModTime": 1445799414765,
+        "modified": 1445799414765,
         "seen": true,
         "name": "main.js"
       },
       "package.json": {
-        "previousModTime": 1445109416465,
-        "modified": 1445109416465,
+        "previousModTime": 1445797643900,
+        "modified": 1445797643900,
         "seen": true,
         "name": "package.json"
       },
       "README.md": {
-        "previousModTime": 1445109312961,
-        "modified": 1445109312961,
+        "previousModTime": 1445608943095,
+        "modified": 1445608943095,
         "seen": true,
         "name": "README.md"
       },
@@ -49,11 +49,29 @@
         "modified": 1445109313180,
         "seen": true,
         "name": "xdk/project-info.json"
+      },
+      ".gitattributes": {
+        "previousModTime": 1445611430490,
+        "modified": 1445611430490,
+        "seen": true,
+        "name": ".gitattributes"
+      },
+      ".gitignore": {
+        "previousModTime": 1445608943079,
+        "modified": 1445608943079,
+        "seen": true,
+        "name": ".gitignore"
+      },
+      "LICENSE": {
+        "previousModTime": 1445608943079,
+        "modified": 1445608943079,
+        "seen": true,
+        "name": "LICENSE"
       }
     },
     "boardFileStatus": {
       "main.js": {
-        "previousModTime": 1445601245291
+        "previousModTime": 1445799419532
       }
     }
   }
