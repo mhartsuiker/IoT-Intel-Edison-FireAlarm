@@ -19,7 +19,7 @@ var sensor = null,
     URL = null;
 
 var constants = {
-    'MAX_TEMPERATURE': 25,
+    'MAX_TEMPERATURE': 27,
     'PIN': {
         'TemperatureSensor': 0, // A0
         'Buzzer': 5, // D5
@@ -40,9 +40,14 @@ var constants = {
         'ADDRESS': '784b87a5a8b4'
     },
     'MQTT': {
+        'ORGANISATION': 'hy07fr',
+        'SENSORTYPE': 'tempsensor',
+        'DEVICEID': 'tempsensor_1',
         'PROTOCOL': 'mqtt',
-        'BROKER': 'quickstart.messaging.internetofthings.ibmcloud.com',
-        'PORT': '1883'
+        'BROKER': '.messaging.internetofthings.ibmcloud.com',
+        'PORT': '1883',
+        'AUTHMETHOD': 'use-token-auth',
+        'AUTHTOKEN': 'ye6QXPs)F)FIIvYcz!'
     }
 
 };
@@ -52,7 +57,7 @@ function setup() {
     sensor = new GROVE.GroveTemp(constants.PIN.TemperatureSensor);
     // GROVE Kit D7 Connector --> Gpio(7)
     button = new GROVE.GroveButton(constants.PIN.Button);    
-    // GROVE Kit D4 Connector --> Gpio(5)
+    // GROVE Kit D5 Connector --> Gpio(5)
     buzzer = new BUZZER.Buzzer(constants.PIN.Buzzer);
     buzzer.stopSound();
 //    speaker = new SPEAKER.GroveSpeaker(constants.PIN.Speaker);
@@ -76,13 +81,15 @@ function readTemperature() {
         if (temperature > constants.MAX_TEMPERATURE) {
             buzzer.playSound(BUZZER.DO,100);
 //            speaker.playSound('c', true, "med");
-            client.publish(TOPIC, '{"d": {"Temperature in celsius": ' + temperature + '}}');
             log(constants.LOGLEVELS.WARNING, constants.MESSAGES.MaxTemperature + temperature);
+            client.publish(TOPIC, '{"d": {"id": ' + constants.MQTT.DEVICEID + ', "lat": "0" , "lng":"0", "temp": ' + temperature + '}}');
+
+            '{"d": {"id": ' + constants.MQTT.DEVICEID + ', "lat": "0" , "lng":"0", "temp": ' + temperature + '}}'
         }
         else {
             buzzer.stopSound();
-            client.publish(TOPIC, '{"d": {"Temperature in celsius": ' + temperature + '}}');
-            log(constants.LOGLEVELS.INFO, constants.MESSAGES.Temperature + temperature);    
+            log(constants.LOGLEVELS.INFO, constants.MESSAGES.Temperature + temperature);
+            client.publish(TOPIC, '{"d": {"id": ' + constants.MQTT.DEVICEID + ', "lat": "0" , "lng":"0", "temp": ' + temperature + '}}');
         }
     }
 }
@@ -104,13 +111,13 @@ function log(level, msg) {
 }
 
 function setupMQTT() {
-    CLIENTID = 'd:quickstart:iotquick-edison:' + constants.MACADDRES.ADDRESS;
-    URL = constants.MQTT.PROTOCOL + '://' + constants.MQTT.BROKER + ':' + constants.MQTT.PORT;
+    CLIENTID = 'd:' + constants.MQTT.ORGANISATION + ':' + constants.MQTT.SENSORTYPE + ':' + constants.MQTT.DEVICEID;
+    URL = constants.MQTT.PROTOCOL + '://' + constants.MQTT.ORGANISATION  + constants.MQTT.BROKER + ':' + constants.MQTT.PORT;
     TOPIC = 'iot-2/evt/status/fmt/json';
-    client = MQTT.connect(URL, { clientId: CLIENTID });
+    client = MQTT.connect(URL, { clientId: CLIENTID, username: constants.MQTT.AUTHMETHOD, password: constants.MQTT.AUTHTOKEN });
 
-    console.log('clientid: ' + CLIENTID);
-    console.log('url: ' + URL);
+    log(constants.LOGLEVELS.INFO, 'clientid: ' + CLIENTID);
+    log(constants.LOGLEVELS.INFO, 'url: ' + URL);
 }
 
 function start() {
