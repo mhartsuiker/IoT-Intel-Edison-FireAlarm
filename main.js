@@ -82,14 +82,12 @@ function readTemperature() {
         if (temperature > constants.MAX_TEMPERATURE) {
             buzzer.playSound(BUZZER.DO,100);
 //            speaker.playSound('c', true, "med");
-            log(constants.LOGLEVELS.WARNING, constants.MESSAGES.MaxTemperature + temperature);
+//            log(constants.LOGLEVELS.WARNING, constants.MESSAGES.MaxTemperature + temperature);
             client.publish(TOPIC, '{"d": {"id": ' + constants.MQTT.DEVICEID + ', "lat": "0" , "lng":"0", "temp": ' + temperature + '}}');
-
-            '{"d": {"id": ' + constants.MQTT.DEVICEID + ', "lat": "0" , "lng":"0", "temp": ' + temperature + '}}'
         }
         else {
             buzzer.stopSound();
-            log(constants.LOGLEVELS.INFO, constants.MESSAGES.Temperature + temperature);
+//            log(constants.LOGLEVELS.INFO, constants.MESSAGES.Temperature + temperature);
             client.publish(TOPIC, '{"d": {"id": ' + constants.MQTT.DEVICEID + ', "lat": "0" , "lng":"0", "temp": ' + temperature + '}}');
         }
     }
