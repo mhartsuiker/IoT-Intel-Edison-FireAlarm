@@ -4,13 +4,11 @@
 
 var GROVE = require("jsupm_grove");
 var BUZZER = require("jsupm_buzzer");
-//var SPEAKER = require("jsupm_grovespeaker");
 var HTTP = require("http");
 var MQTT = require("mqtt");
 
 var sensor = null,
     buzzer = null,
-    //speaker = null,
     button = null,
     interval = null,
     client = null,
@@ -49,18 +47,36 @@ var constants = {
         'AUTHMETHOD': 'use-token-auth',
         'AUTHTOKEN': 'ye6QXPs)F)FIIvYcz!'
     }
-
 };
+
+var mqttoptions = { 
+    keepalive: 10,    
+    clientId: 'd:' + constants.MQTT.ORGANISATION + ':' + constants.MQTT.SENSORTYPE + ':' + constants.MQTT.DEVICEID;,
+    protocolId: 'MQTT',
+    protocolVersion: 4,
+    clean: true,
+    reconnectPeriod: 1000,
+    connectTimeout: 30 * 1000,
+    will: {
+        topic: 'WillMsg',
+        payload: 'Connection Closed abnormally..!',
+        qos: 0,
+        retain: false
+    },
+    username: constants.MQTT.AUTHMETHOD,
+    password: constants.MQTT.AUTHTOKEN,
+    rejectUnauthorized: false,
+};
+
 
 function setup() {
     // GROVE Kit A0 Connector --> Aio(0)
     sensor = new GROVE.GroveTemp(constants.PIN.TemperatureSensor);
-    // GROVE Kit D7 Connector --> Gpio(7)
+    // GROVE Kit D3 Connector --> Gpio(3)
     button = new GROVE.GroveButton(constants.PIN.Button);    
     // GROVE Kit D5 Connector --> Gpio(5)
     buzzer = new BUZZER.Buzzer(constants.PIN.Buzzer);
     buzzer.stopSound();
-//    speaker = new SPEAKER.GroveSpeaker(constants.PIN.Speaker);
 }
 
 // Read data from the sensor
@@ -81,14 +97,15 @@ function readTemperature() {
         
         if (temperature > constants.MAX_TEMPERATURE) {
             buzzer.playSound(BUZZER.DO,100);
-//            speaker.playSound('c', true, "med");
-//            log(constants.LOGLEVELS.WARNING, constants.MESSAGES.MaxTemperature + temperature);
-            client.publish(TOPIC, '{"d": {"id": ' + constants.MQTT.DEVICEID + ', "lat": "0" , "lng":"0", "temp": ' + temperature + '}}');
+            client.publish(TOPIC,
+                         '{"d": {"id": ' + constants.MQTT.DEVICEID + ', "lat": "0" , "lng":"0", "temp": ' + temperature + '}}',
+                          { qos: 0, retained: false });
         }
         else {
             buzzer.stopSound();
-//            log(constants.LOGLEVELS.INFO, constants.MESSAGES.Temperature + temperature);
-            client.publish(TOPIC, '{"d": {"id": ' + constants.MQTT.DEVICEID + ', "lat": "0" , "lng":"0", "temp": ' + temperature + '}}');
+            client.publish(TOPIC,
+                         '{"d": {"id": ' + constants.MQTT.DEVICEID + ', "lat": "0" , "lng":"0", "temp": ' + temperature + '}}',
+                          { qos: 0, retained: false });
         }
     }
 }
@@ -110,21 +127,31 @@ function log(level, msg) {
 }
 
 function setupMQTT() {
-    CLIENTID = 'd:' + constants.MQTT.ORGANISATION + ':' + constants.MQTT.SENSORTYPE + ':' + constants.MQTT.DEVICEID;
     URL = constants.MQTT.PROTOCOL + '://' + constants.MQTT.ORGANISATION  + constants.MQTT.BROKER + ':' + constants.MQTT.PORT;
     TOPIC = 'iot-2/evt/status/fmt/json';
-    client = MQTT.connect(URL, { clientId: CLIENTID, username: constants.MQTT.AUTHMETHOD, password: constants.MQTT.AUTHTOKEN });
-
     log(constants.LOGLEVELS.INFO, 'clientid: ' + CLIENTID);
     log(constants.LOGLEVELS.INFO, 'url: ' + URL);
+    log(constants.LOGLEVELS.INFO, 'topic: ' + TOPIC);
 }
 
 function start() {
     setup();
     setupMQTT();
-    log(constants.LOGLEVELS.INFO, 'Application starting');
+    log(constants.LOGLEVELS.INFO, 'application starting');
+    
+    client = MQTT.connect(URL, mqttoptions);
+    
     client.on('connect', function() {
         interval = setInterval(readTemperature, 1000); // Read temperature every 10 seconds
+    });
+    
+    client.on('close', function () {
+        log(constants.LOGLEVELS.ERROR, 'connection closed!');   
+    }
+    
+    client.on('error', function (err) {
+        log(constants.LOGLEVELS.ERROR, 'error: ' + err);   
+        client.end();
     });
 }
 
