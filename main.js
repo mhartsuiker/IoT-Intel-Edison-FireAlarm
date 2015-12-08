@@ -43,7 +43,7 @@ var constants = {
         'DEVICEID': 'tempsensor_1',
         'PROTOCOL': 'mqtt',
         'BROKER': '.messaging.internetofthings.ibmcloud.com',
-        'PORT': '1883',
+        'PORT': '8883',
         'AUTHMETHOD': 'use-token-auth',
         'AUTHTOKEN': 'ye6QXPs)F)FIIvYcz!'
     }
